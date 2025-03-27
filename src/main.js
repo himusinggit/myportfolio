@@ -14,6 +14,7 @@ class particles{
     this.x = x;
     this.y = y;
     this.radius = radius;
+    this.tempradius = radius;
     this.color = color;
     this.dx = Math.random() * 1 - .5;
     this.dy = Math.random() * 1 - .5;
@@ -39,13 +40,20 @@ class particles{
     this.y = canvas.height;
   }
   
-  if(distance(this.x,this.y,mouse.x,mouse.y) < 200){
-    let diffx = mouse.x - this.x;
-    let diffy = mouse.y - this.y;
-    let tempdx = diffx/(distance(this.x,this.y,mouse.x,mouse.y));
-    let tempdy = diffy/(distance(this.x,this.y,mouse.x,mouse.y));
-    this.x += -tempdx;
-    this.y += -tempdy;
+  if(distance(this.x,this.y,mouse.x,mouse.y) < 150){
+
+    if(this.radius<3){
+    this.radius += 0.3;
+    }
+    
+  }
+  else{
+    if(this.radius>this.tempradius){
+      this.radius -= 0.1;
+    }
+    else{
+      this.radius = this.tempradius
+    }
   }
 }
 }
