@@ -2,6 +2,7 @@ const canvas = document.querySelector('.canvas');
 const cd = canvas.getContext('2d');
 canvas.width = innerWidth;
 canvas.height = innerHeight;
+gsap.registerPlugin(ScrollTrigger);
 let mouse = {
   x: 0,
   y: 0
@@ -62,11 +63,12 @@ window.onresize = () => {
   canvas.height = innerHeight;
 }
 const particlesArray = [];
+let myparticlecolor = 'rgb(255, 213, 0)';
 for (let i = 0; i < 200; i++) {
   let x = Math.random() * canvas.width;
   let y = Math.random() * canvas.height;
   let radius = Math.random() * 0.6 + 0.2;
-  particlesArray.push(new particles(x,y, radius,'rgb(255, 213, 0)'))
+  particlesArray.push(new particles(x,y, radius,myparticlecolor))
 }
 function animateH(time){
   document.querySelector('.gola').style.transform = `rotate(${Math.sin(time)*10}deg)`;
@@ -75,7 +77,6 @@ function animateH(time){
 document.querySelector('.foregrounddiv').addEventListener('mousemove', (e) => {
   mouse.x = e.clientX;
   mouse.y = e.clientY;
-  console.log(mouse.x,' ', mouse.y);
 })
 let mytime = 0;
 function animate() {
@@ -88,3 +89,30 @@ function animate() {
   
 }
 animate();
+
+let toggle = 0;
+let curangle = 180;
+document.querySelector('.gola').addEventListener('click', (e) => {
+  if(toggle == 0){
+    document.querySelector('.gola').style.transform = `rotate(${curangle}deg)`;
+    curangle += 180;
+    document.documentElement.style.setProperty('--mygold', 'rgb(0, 247, 255)');
+    for(let i = 0; i < particlesArray.length; i++){
+      particlesArray[i].color = 'rgb(0, 247, 255)';
+    }
+    console.log('clicked');
+    toggle = 1;
+    return
+  }
+  if(toggle == 1){
+    document.documentElement.style.setProperty('--mygold', 'rgb(255, 213, 0)');
+    document.querySelector('.gola').style.transform = `rotate(${curangle}deg)`;
+    curangle += 180;
+    for(let i = 0; i < particlesArray.length; i++){
+      particlesArray[i].color = 'rgb(255, 213, 0)';
+    }
+    console.log('undoed');
+    toggle = 0;
+    return
+  }
+})
